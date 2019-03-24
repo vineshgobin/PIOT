@@ -18,6 +18,7 @@ class monitorAndNotify:
         max_temp = data["max_temperature"]
         min_temp = data["min_temperature"]
 
+        # Comparing current temperature to min and max
         if temp > max_temp:
             result = (str(temp - max_temp) + " *C above maximum temperature.")
         if temp < min_temp:

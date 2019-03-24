@@ -1,74 +1,32 @@
-# monitorAndNotify.py
-
-from sense_hat import SenseHat
-from sense_hat import SenseHat
+from __future__ import print_function
+from temperature import *
 import json
 
+##open json file and get data
 with open('config.json') as f:
     data = json.load(f)
 
-sense = SenseHat()
-sense.clear()
+class monitorAndNotify:
 
-temp = sense.get_temperature()
-print("Temperature")
+    def temperature(self):
 
-print(temp)
-##max temp
-a = " Degrees Above Max Temp"
-x = data["max_temperature"]
-y = temp - x
-y = round(y)
-y = str(y)
+        # Temperature right now
+        temp = round(temperature().getTemp())
+        print("Temperature is " + str(temp) + " *C.")
 
-##min temp
-b = " Degrees Below Min Temp"
-i = data["min_temperature"]
-z = i - temp
-z = round(z)
-z = str(z)
+        # Maximum and minimum temperatures
+        max_temp = data["max_temperature"]
+        min_temp = data["min_temperature"]
 
+        if temp > max_temp:
+            result = (str(temp - max_temp) + " *C above maximum temperature.")
+        if temp < min_temp:
+            result = (str(min_temp - temp) + " *C under minimum temperature.")
+        if (temp < max_temp) and (temp > min_temp):
+            result = ("Temperature is within range.")
 
-if temp > data["max_temperature"]:
-    
-    print(y + a )
-
-if temp < data["min_temperature"]:
-    print(z + b)
-
-if temp > data["min_temperature"] and temp < data["max_temperature"] :
-    print("Within Range")
+        return result
 
 
-print("-----------------------")
-
-sense = SenseHat()
-sense.clear()
-
-humidity = sense.get_humidity()
-print("Humidity")
-print(humidity)
-
-##min humidity
-e = "% below min Humidity"
-k = data["min_humidity"]
-hum1 = ((humidity - k)/k) * 100
-hum1 = round(hum1)
-hum1  = str(hum1)
-
-##min humidity
-c = "% below min Humidity"
-j = data["min_humidity"]
-hum = ((j - humidity)/j) * 100
-hum = round(hum)
-hum  = str(hum)
 
 
-if temp > data["max_humidity"]:
-    print(hum1 + e)
-
-if temp < data["min_humidity"]:
-     print(hum + c)
-
-if temp > data["min_humidity"] and temp < data["max_humidity"] :
-    print("Within Range")

@@ -13,6 +13,12 @@ class main:
         print()
 
         temp = monitorAndNotify().temperature()
-        print (temp)
+        print(temp)
+        print()
+        print("-"*16)
+        print()
+        humid = monitorAndNotify().humidity()
+        print(humid)
+
 
 main.main()

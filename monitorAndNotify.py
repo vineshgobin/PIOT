@@ -21,11 +21,11 @@ class monitorAndNotify:
 
         # Comparing current temperature to min and max
         if temp > max_temp:
-            result = (str(temp - max_temp) + " *C above maximum temperature.")
+            result = (str(temp - max_temp) + "Bad, *C above maximum temperature.")
         if temp < min_temp:
-            result = (str(min_temp - temp) + " *C under minimum temperature.")
+            result = (str(min_temp - temp) + "Bad, *C under minimum temperature.")
         if (temp < max_temp) and (temp > min_temp):
-            result = ("Temperature is within range.")
+            result = ("OK.")
 
         return result
 
@@ -41,11 +41,11 @@ class monitorAndNotify:
 
         # Comparing current humidity to min and max
         if humid > max_humid:
-            result = (str(humid - max_humid) + "% above maximum humidity.")
+            result = (str(humid - max_humid) + "Bad, % above maximum humidity.")
         if humid < min_humid:
-            result = (str(min_humid - humid) + "% under minimum humidity.")
+            result = (str(min_humid - humid) + "Bad, % under minimum humidity.")
         if (humid < max_humid) and (humid > min_humid):
-            result = ("Humidity is within range.")
+            result = ("OK.")
 
         return result
 

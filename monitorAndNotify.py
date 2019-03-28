@@ -2,6 +2,8 @@ from __future__ import print_function
 from temperature import *
 from humidity import *
 import json
+import sqlite3
+dbname = 'sensehat.db'
 
 ##open json file and get data
 with open('config.json') as f:
@@ -21,9 +23,9 @@ class monitorAndNotify:
 
         # Comparing current temperature to min and max
         if temp > max_temp:
-            result = (str(temp - max_temp) + "Bad, *C above maximum temperature.")
+            result = (" Bad:"+ str(temp - max_temp) + "*C above maximum temperature.")
         if temp < min_temp:
-            result = (str(min_temp - temp) + "Bad, *C under minimum temperature.")
+            result = (" Bad:"+ str(min_temp - temp) + "*C under minimum temperature.")
         if (temp < max_temp) and (temp > min_temp):
             result = ("OK.")
 
@@ -41,13 +43,26 @@ class monitorAndNotify:
 
         # Comparing current humidity to min and max
         if humid > max_humid:
-            result = (str(humid - max_humid) + "Bad, % above maximum humidity.")
+            result = (" Bad:"+ str(humid - max_humid) + "% above maximum humidity.")
         if humid < min_humid:
-            result = (str(min_humid - humid) + "Bad, % under minimum humidity.")
+            result = (" Bad:"+ str(min_humid - humid) + "% under minimum humidity.")
         if (humid < max_humid) and (humid > min_humid):
             result = ("OK.")
 
         return result
+
+    def initDB(self):
+        con = sqlite3.connect('sensehat.db')
+        cur = con.cursor() 
+        cur.execute("DROP TABLE IF EXISTS SENSEHAT_data")
+        cur.execute("CREATE TABLE SENSEHAT_data(DateTime,Temp TEXT,Humidity TEXT)")
+
+    def datab(self, now, temp, humidity):
+        conn=sqlite3.connect(dbname)
+        curs=conn.cursor()
+        curs.execute('''INSERT INTO SENSEHAT_data (DateTime,Temp, Humidity) VALUES (?,?,?)''', (now, temp, humidity,))
+        conn.commit()
+        conn.close()
 
 
 

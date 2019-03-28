@@ -32,6 +32,6 @@ class main:
         if (not exists):
             monitorAndNotify().initDB()
 
-        monitorAndNotify().datab(now,temperature().getTemp(), humidity().getHumidity())
+        monitorAndNotify().datab(now,temperature().getTemp(), humidity().getHumid())
 
 main.main()

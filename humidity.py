@@ -6,4 +6,4 @@ class humidity:
 
     def getHumid(self):
         sense.clear()
-        return sense.get_humidity()
+        return round(sense.get_humidity(), 2)

@@ -14,7 +14,7 @@ class monitorAndNotify:
     def temperature(self):
 
         # Temperature right now
-        temp = round(temperature().getTemp())
+        temp = round(temperature().getTemp(), 2)
         print("Temperature is " + str(temp) + " *C.")
 
         # Maximum and minimum temperatures
@@ -23,9 +23,9 @@ class monitorAndNotify:
 
         # Comparing current temperature to min and max
         if temp > max_temp:
-            result = (" Bad:"+ str(temp - max_temp) + "*C above maximum temperature.")
+            result = ("Bad: "+ str(temp - max_temp) + "*C above maximum temperature.")
         if temp < min_temp:
-            result = (" Bad:"+ str(min_temp - temp) + "*C under minimum temperature.")
+            result = ("Bad: "+ str(min_temp - temp) + "*C under minimum temperature.")
         if (temp < max_temp) and (temp > min_temp):
             result = ("OK.")
 
@@ -34,7 +34,7 @@ class monitorAndNotify:
     def humidity(self):
 
         # Humidity right now
-        humid = round(humidity().getHumid())
+        humid = round(humidity().getHumid(), 2)
         print("Humidity is " + str(humid) + "%.")
 
         # Maximum and minimum humidities
@@ -43,9 +43,9 @@ class monitorAndNotify:
 
         # Comparing current humidity to min and max
         if humid > max_humid:
-            result = (" Bad:"+ str(humid - max_humid) + "% above maximum humidity.")
+            result = ("Bad: "+ str(humid - max_humid) + "% above maximum humidity.")
         if humid < min_humid:
-            result = (" Bad:"+ str(min_humid - humid) + "% under minimum humidity.")
+            result = ("Bad: "+ str(min_humid - humid) + "% under minimum humidity.")
         if (humid < max_humid) and (humid > min_humid):
             result = ("OK.")
 

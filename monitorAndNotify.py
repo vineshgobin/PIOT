@@ -1,6 +1,6 @@
 from __future__ import print_function
-from temperature import *
-from humidity import *
+import temperature
+import humidity
 import json
 import sqlite3
 dbname = 'sensehat.db'

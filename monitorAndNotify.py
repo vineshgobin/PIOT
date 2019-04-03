@@ -36,6 +36,8 @@ class monitorAndNotify:
 
         # Humidity right now
         humid = round(humidity().getHumid(), 2)
+        while (humid == 0):
+            humid = round(humidity().getHumid(), 2)
         print("Humidity is " + str(humid) + "%.")
 
         # Maximum and minimum humidities

@@ -12,6 +12,17 @@ with open('config.json') as f:
 class main:
 
     # prints time, temperature and humidity for debugging purposes
+    def sendMessage(self, currentTemp, min_temp, max_temp, currentHumid, min_humid, max_humid, today, pushbullet, file):
+        if (currentTemp < min_temp):
+            pushbullet.push_note("Raspberry Pi", "WARNING: Temperature is less than minimum.")
+        if (currentTemp > max_temp):
+            pushbullet.push_note("Raspberry Pi", "WARNING: Temperature is more than maximum.")
+        if (currentHumid < min_humid):
+            pushbullet.push_note("Raspberry Pi", "WARNING: Humidity is less than minimum.")
+        if (currentTemp > max_humid):
+            pushbullet.push_note("Raspberry Pi", "WARNING: Humidity is more than minimum.")
+        file.write(today)
+
     def main():
 
         #dateAndTime
@@ -31,6 +42,8 @@ class main:
 
         currentTemp = temperature().getTemp()
         currentHumid = humidity().getHumid()
+        while (currentHumid == 0):
+            currentHumid = humidity().getHumid()
 
         print ("Current date and time :" , end = ' ')
         print (now.strftime("%d-%m-%y %H:%M"))
@@ -60,18 +73,14 @@ class main:
 
         if (not file_exists):
             file = open ("/home/pi/IOT-A1/dayTracker.txt", "w")
-            if ((currentTemp < min_humid or currentTemp > max_humid) or (currentHumid < min_humid or currentHumid > max_humid)):
-                pushbullet.push_note("Raspberry Pi", "WARNING: Readings out of bounds.")
-                file.write(today)
+            main().sendMessage(currentTemp, min_temp, max_temp, currentHumid, min_humid, max_humid, today, pushbullet, file)
             file.close()
 
         # Compares today's date with the date in the file. If the date changed, a new notification is sent to the user when the conditions are met.
         file = open ("/home/pi/IOT-A1/dayTracker.txt", "r+")
         lastDate = file.readline()
         if (today > lastDate):
-            if ((currentTemp < min_humid or currentTemp > max_humid) or (currentHumid < min_humid or currentHumid > max_humid)):
-                pushbullet.push_note("Raspberry Pi", "WARNING: Readings out of bounds.")
-                file.write(today)
-                file.close()
+            main().sendMessage(currentTemp, min_temp, max_temp, currentHumid, min_humid, max_humid, today, pushbullet, file)
+        file.close()
 
 main.main()

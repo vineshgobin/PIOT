@@ -58,12 +58,12 @@ class monitorAndNotify:
         con = sqlite3.connect('sensehat.db')
         cur = con.cursor() 
         cur.execute("DROP TABLE IF EXISTS SENSEHAT_data")
-        cur.execute("CREATE TABLE SENSEHAT_data(DateTime,Temp TEXT,Humidity TEXT)")
+        cur.execute("CREATE TABLE SENSEHAT_data(TimeStamp DATETIME,Temp DOUBLE,Humidity DOUBLE)")
 
     def datab(self, now, temp, humidity):
         conn=sqlite3.connect(dbname)
         curs=conn.cursor()
-        curs.execute('''INSERT INTO SENSEHAT_data (DateTime,Temp, Humidity) VALUES (?,?,?)''', (now, temp, humidity,))
+        curs.execute('''INSERT INTO SENSEHAT_data (TimeStamp,Temp, Humidity) VALUES (?,?,?)''', (now, temp, humidity,))
         conn.commit()
         conn.close()
 

@@ -3,7 +3,7 @@ from datetime import datetime, timedelta
 import json, csv
 
 DB_NAME = "sensehat.db"
-DATE_FORMAT = "%y%m%d"
+DATE_FORMAT = "%Y-%m-%d"
 ONE_DAY_DELTA = timedelta(days = 1)
 
 with open('config.json') as f:
@@ -17,7 +17,7 @@ def report():
     with connection:
         cursor = connection.cursor()
 
-        row = cursor.execute("SELECT DATE(MIN(DateTime)), DATE(MAX(DateTime)) FROM SENSEHAT_data").fetchone()
+        row = cursor.execute("SELECT DATE(MIN(TimeStamp)), DATE(MAX(TimeStamp)) FROM SENSEHAT_data").fetchone()
         startDate = datetime.strptime(row[0], DATE_FORMAT)
         endDate = datetime.strptime(row[1], DATE_FORMAT)
 
@@ -26,7 +26,7 @@ def report():
         while date <= endDate:
             row = cursor.execute(
                 """SELECT MIN(Temp),MAX(Temp) FROM SENSEHAT_data
-                WHERE DateTime >= DATE(:date) AND DateTime < DATE(:date, '+1 day')""",
+                WHERE TimeStamp >= DATE(:date) AND TimeStamp < DATE(:date, '+1 day')""",
                 { "date": date.strftime(DATE_FORMAT) }).fetchone()
 
             minTemp = row[0]
@@ -36,17 +36,20 @@ def report():
 
             message = "OK" 
 
+            diff1 = configMinTemp - minTemp
+            diff2 = maxTemp - configMaxTemp
+
             if(float(minTemp) < configMinTemp):
-                message = "BAD: below minimum temp" + str(minTemp)
+                message = "BAD: " + str(diff1)+ "* below minimum temperature" 
             if(float(maxTemp) > configMaxTemp):
-                message = "BAD: above max temp" + str(maxTemp)
+                message = "BAD: " + str(diff2)+ "* above max temperature"
             
             print(date.strftime(DATE_FORMAT) + " | " + message)
 
                 
             row = cursor.execute(
                 """SELECT MIN(Humidity),MAX(Humidity) FROM SENSEHAT_data
-                WHERE DateTime >= DATE(:date) AND DateTime < DATE(:date, '+1 day')""",
+                WHERE TimeStamp >= DATE(:date) AND TimeStamp < DATE(:date, '+1 day')""",
                 { "date": date.strftime(DATE_FORMAT) }).fetchone()
 
             
@@ -54,15 +57,18 @@ def report():
             maxHum = row[1]
             configMinHum = data["min_humidity"]
             configMaxHum = data["max_humidity"]
+
+            diff3 = configMinHum - minHum
+            diff4 = maxHum - configMaxHum
              
            
             msg = "OK" 
             
             if(float(minHum) < configMinHum):
-                msg = "BAD: below minimum humidity" + str(minHum)
+               msg = "BAD: " + str(diff3)+ " below minimum humidity"
             
-            if(float(maxHum) < configMaxHum):
-                msg = "BAD: above max humidity" + str(maxHum)
+            if(float(maxHum) > configMaxHum):
+                 msg = "BAD: " + str(diff4)+ " above max humidity"
             else:
                 msg
             

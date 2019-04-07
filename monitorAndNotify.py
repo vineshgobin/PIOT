@@ -16,7 +16,6 @@ class monitorAndNotify:
 
         # Temperature right now
         temp = round(temperature().getTemp(), 2)
-        print("Temperature is " + str(temp) + " *C.")
 
         # Maximum and minimum temperatures
         max_temp = data["max_temperature"]
@@ -38,7 +37,6 @@ class monitorAndNotify:
         humid = round(humidity().getHumid(), 2)
         while (humid == 0):
             humid = round(humidity().getHumid(), 2)
-        print("Humidity is " + str(humid) + "%.")
 
         # Maximum and minimum humidities
         max_humid = data["max_humidity"]

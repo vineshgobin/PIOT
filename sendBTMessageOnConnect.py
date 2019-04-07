@@ -27,11 +27,7 @@ class sendBTMessageOnConnect:
             for macAddresses in nearby_devices:
                 nearby_devices = blueConn.discover_devices()
                 if macAdd == macAddresses:
-                    print ("Found target bluetooth device!")
                     pushbullet.push_note("Raspberry Pi", message)
-                    print("Message sent. \nNext message will be sent in an hour from now IF the bluetooth device is still discoverable.")
                     time.sleep(600)
-                else:
-                    print ("Could not find target bluetooth device nearby. Make sure device is discoverable.")
-
+                
 sendBTMessageOnConnect.main()

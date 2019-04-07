@@ -6,4 +6,3 @@ class pushbulletMessage:
         headers = { 'Access-Token': 'o.3BURPKcWSiMAJlQpFzw0EwxS7A5fWk7P' }
         data = {'title': title, 'body': message, 'type': 'note'}
         r = requests.post(url, data=data, headers=headers).json()
-        print('Pushed: '+ message)

@@ -45,20 +45,14 @@ class main:
         while (currentHumid == 0):
             currentHumid = humidity().getHumid()
 
-        print ("Current date and time :" , end = ' ')
-        print (now.strftime("%d-%m-%y %H:%M"))
-        print()
+        
 
 
-        # Prints temperature and humidity
+        # Gets temperature and humidity
         temp = monitorAndNotify().temperature()
-        print(temp)
-        print()
-        print("-"*16)
-        print()
+        
         humid = monitorAndNotify().humidity()
-        print(humid)
-        print()
+        
 
         # Creates a new database if not already created
         db_exists = os.path.isfile('/home/pi/IOT-A1/sensehat.db')

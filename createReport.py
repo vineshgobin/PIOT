@@ -21,7 +21,7 @@ class createReport:
             startDate = datetime.strptime(row[0], DATE_FORMAT)
             endDate = datetime.strptime(row[1], DATE_FORMAT)
 
-            print("Dates:")
+            
             date = startDate
             while date <= endDate:
                 row = cursor.execute(
@@ -45,7 +45,6 @@ class createReport:
                 if(float(maxTemp) > configMaxTemp):
                     message += " " + str(diff2)+ "* above max temperature"
                 
-                print(date.strftime(DATE_FORMAT) + " | " + message)
 
                 
                 
@@ -69,7 +68,6 @@ class createReport:
                 if(float(maxHum) > configMaxHum):
                     message += " " + str(diff4)+ " above max humidity"
                 
-                print(date.strftime(DATE_FORMAT) + " | " + msg)
 
                 if ((maxTemp < configMaxTemp) and (minTemp > configMinTemp) and (maxHum < configMaxHum) and (minHum > configMinHum)):
                     myData = [[date.strftime(DATE_FORMAT),msg]]

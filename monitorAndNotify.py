@@ -4,7 +4,7 @@ from temperature import temperature
 from humidity import humidity
 import json
 import sqlite3
-dbname = 'sensehat.db'
+dbname = '/home/pi/IOT-A1/sensehat.db'
 
 ##open json file and get data
 with open('config.json') as f:
@@ -55,7 +55,7 @@ class monitorAndNotify:
         return result
 
     def initDB(self):
-        con = sqlite3.connect('sensehat.db')
+        con = sqlite3.connect(dbname)
         cur = con.cursor() 
         cur.execute("DROP TABLE IF EXISTS SENSEHAT_data")
         cur.execute("CREATE TABLE SENSEHAT_data(TimeStamp DATETIME,Temp DOUBLE,Humidity DOUBLE)")

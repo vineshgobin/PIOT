@@ -14,14 +14,14 @@ class main:
     # prints time, temperature and humidity for debugging purposes
     def sendMessage(self, currentTemp, min_temp, max_temp, currentHumid, min_humid, max_humid, today, pushbullet, file):
         if (currentTemp < min_temp):
-            pushbullet.push_note("Raspberry Pi", "WARNING: Temperature is less than minimum.")
+            pushbullet.push_note("Raspberry Pi", "WARNING: Temperature is less than minimum. (%0.2f*C)" % currentTemp)
         if (currentTemp > max_temp):
-            pushbullet.push_note("Raspberry Pi", "WARNING: Temperature is more than maximum.")
+            pushbullet.push_note("Raspberry Pi", "WARNING: Temperature is more than maximum. (%0.2f*C)" % currentTemp)
         if (currentHumid < min_humid):
-            pushbullet.push_note("Raspberry Pi", "WARNING: Humidity is less than minimum.")
+            pushbullet.push_note("Raspberry Pi", "WARNING: Humidity is less than minimum. (%0.2f)" % currentHumid)
         if (currentTemp > max_humid):
-            pushbullet.push_note("Raspberry Pi", "WARNING: Humidity is more than minimum.")
-        file.write(today)
+            pushbullet.push_note("Raspberry Pi", "WARNING: Humidity is more than maximum. (%0.2f)" % currentHumid)
+        file.write(today + "\n")
 
     def main():
 
@@ -66,7 +66,7 @@ class main:
         if (not db_exists):
             monitorAndNotify().initDB()
 
-        monitorAndNotify().datab(now.strftime("%d-%m-%y %H:%M"),currentTemp, currentHumid)
+        monitorAndNotify().datab(now.strftime("%Y-%m-%d"),currentTemp, currentHumid)
 
         # Creates a text file where the last date when a notification was sent is recorded.
         file_exists = os.path.isfile('/home/pi/IOT-A1/dayTracker.txt')
@@ -78,7 +78,7 @@ class main:
 
         # Compares today's date with the date in the file. If the date changed, a new notification is sent to the user when the conditions are met.
         file = open ("/home/pi/IOT-A1/dayTracker.txt", "r+")
-        lastDate = file.readline()
+        lastDate = file.read().splitlines()[-1]
         if (today > lastDate):
             main().sendMessage(currentTemp, min_temp, max_temp, currentHumid, min_humid, max_humid, today, pushbullet, file)
         file.close()
